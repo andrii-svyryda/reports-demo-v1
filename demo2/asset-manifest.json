@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/reports-demos-v1/demo2/static/css/main.314a17cb.css",
+    "main.js": "/reports-demos-v1/demo2/static/js/main.e135ece5.js",
+    "index.html": "/reports-demos-v1/demo2/index.html",
+    "main.314a17cb.css.map": "/reports-demos-v1/demo2/static/css/main.314a17cb.css.map",
+    "main.e135ece5.js.map": "/reports-demos-v1/demo2/static/js/main.e135ece5.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.314a17cb.css",
+    "static/js/main.e135ece5.js"
+  ]
+}
