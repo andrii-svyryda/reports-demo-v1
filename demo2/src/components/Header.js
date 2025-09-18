@@ -15,10 +15,10 @@ const Header = () => {
           </div>
         </div>
         <nav className="nav-menu">
-          <a href="#" className="nav-link active">Report Generator</a>
-          <a href="#" className="nav-link">Patient Records</a>
-          <a href="#" className="nav-link">Trust Reports</a>
-          <a href="#" className="nav-link">Audit Trail</a>
+          <button className="nav-link active">Report Generator</button>
+          <button className="nav-link">Patient Records</button>
+          <button className="nav-link">Trust Reports</button>
+          <button className="nav-link">Audit Trail</button>
         </nav>
         <div className="header-status">
           <Shield size={16} className="security-icon" />
