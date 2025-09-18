@@ -116,6 +116,11 @@ jobs:
 
           # Add .nojekyll file to prevent Jekyll processing
           touch deploy/.nojekyll
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy
+          path: ./deploy
 
   deploy:
     environment:
@@ -124,13 +129,19 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deploy
+          path: ./deploy
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./demo1-build
+          path: ./deploy
 
       - name: Deploy to GitHub Pages
         id: deployment
