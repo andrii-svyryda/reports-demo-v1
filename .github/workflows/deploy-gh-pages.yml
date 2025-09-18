@@ -1,0 +1,125 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build Demo1
+        working-directory: ./demo1
+        run: |
+          npm ci
+          PUBLIC_URL=/reports_demos/demo1 npm run build
+
+      - name: Build Demo2
+        working-directory: ./demo2
+        run: |
+          npm ci
+          PUBLIC_URL=/reports_demos/demo2 npm run build
+
+      - name: Prepare deployment
+        run: |
+          mkdir -p deploy
+          cp -r demo1/build deploy/demo1
+          cp -r demo2/build deploy/demo2
+          cat > deploy/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Report Demos</title>
+              <style>
+                  body {
+                      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                      max-width: 800px;
+                      margin: 50px auto;
+                      padding: 20px;
+                      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                      min-height: 100vh;
+                  }
+                  .container {
+                      background: white;
+                      border-radius: 10px;
+                      padding: 40px;
+                      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                  }
+                  h1 {
+                      color: #333;
+                      border-bottom: 3px solid #667eea;
+                      padding-bottom: 10px;
+                  }
+                  .demos {
+                      display: grid;
+                      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                      gap: 20px;
+                      margin-top: 30px;
+                  }
+                  .demo-card {
+                      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                      border-radius: 8px;
+                      padding: 20px;
+                      text-align: center;
+                      transition: transform 0.3s;
+                  }
+                  .demo-card:hover {
+                      transform: translateY(-5px);
+                  }
+                  .demo-card a {
+                      color: white;
+                      text-decoration: none;
+                      font-size: 18px;
+                      font-weight: bold;
+                  }
+                  .demo-card p {
+                      color: rgba(255, 255, 255, 0.9);
+                      margin-top: 10px;
+                      font-size: 14px;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>📊 Report Processing Demos</h1>
+                  <p>Welcome to the Report Processing demonstration applications</p>
+                  <div class="demos">
+                      <div class="demo-card">
+                          <a href="./demo1/">Demo 1</a>
+                          <p>TypeScript React application with report generation</p>
+                      </div>
+                      <div class="demo-card">
+                          <a href="./demo2/">Demo 2</a>
+                          <p>NHS Report processor with Excel export</p>
+                      </div>
+                  </div>
+              </div>
+          </body>
+          </html>
+          EOF
+
+          # Add .nojekyll file to prevent Jekyll processing
+          touch deploy/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./deploy
+          force_orphan: true
