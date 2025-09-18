@@ -93,7 +93,7 @@ const ReportDownload = ({ fileName, reportType, onReset }) => {
   const reportDetails = getReportDetails();
   const handleDownload = () => {
     const link = document.createElement("a");
-    link.href = "/sample-report.xlsx";
+    link.href = "/reports-demo-v1/demo1/sample-report.xlsx";
     link.download = `NHS-${reportType}-${Date.now()}.xlsx`;
     document.body.appendChild(link);
     link.click();

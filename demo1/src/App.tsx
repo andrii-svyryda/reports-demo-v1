@@ -120,8 +120,8 @@ function App() {
 
   const handleDownload = () => {
     const link = document.createElement("a");
-    link.href = "/sample-report.xlsx";
-    link.download = "laboratory-report-EPIC-2024.xlsx";
+    link.href = "/reports-demo-v1/demo1/sample-report.xlsx";
+    link.download = `laboratory-report-EPIC-${Date.now()}.xlsx`;
     link.click();
   };
 
